@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ case.id }} - Case Detail</title>
+    <style>
+        :root {
+            --bg-color: #0b1120;
+            --card-bg: #131d31;
+            --border-color: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 24px;
+        }
+
+        .top-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .back-link {
+            color: #38bdf8;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            background: #1e293b;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .back-link:hover {
+            background: #334155;
+            color: #7dd3fc;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .detail-item {
+            background: #0f172a;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .detail-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .detail-val {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 12px;
+        }
+        .btn-blue { background: #3b82f6; }
+        .btn-purple { background: #8b5cf6; }
+        .btn-red { background: #ef4444; }
+        .btn-green { background: #10b981; }
+
+        textarea {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            box-sizing: border-box;
+            margin-bottom: 12px;
+        }
+
+        .shap-item {
+            background: #0f172a;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-nav">
+        <div>
+            <!-- Directly routes back to main queue -->
+            <a href="/" class="back-link">← Back to Case Queue</a>
+            <h2 style="display: inline; margin-left: 16px;">{{ case.id }}</h2>
+            <span style="background: #1e293b; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-left: 8px;">STATUS: {{ case.status }}</span>
+        </div>
+        <div>
+            AI Recommendation: <strong style="color: #ef4444;">{{ case.recommendation }}</strong>
+            | Calibrated Probability: <strong>{{ "%.1f"|format(case.risk_score * 100) }}%</strong>
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <!-- Main Column -->
+        <div>
+            <!-- Transaction Details -->
+            <div class="card">
+                <h3>💳 Transaction Details</h3>
+                <div class="details-grid">
+                    <div class="detail-item"><div class="detail-label">Amount</div><div class="detail-val">${{ "%.2f"|format(case.transaction.amount) }}</div></div>
+                    <div class="detail-item"><div class="detail-label">Category</div><div class="detail-val">{{ case.transaction.category }}</div></div>
+                    <div class="detail-item"><div class="detail-label">Time</div><div class="detail-val">{{ case.transaction.time }}</div></div>
+                    <div class="detail-item"><div class="detail-label">Distance</div><div class="detail-val">{{ case.transaction.distance }} km</div></div>
+                    <div class="detail-item"><div class="detail-label">Card Identifier</div><div class="detail-val">{{ case.transaction.card_id }}</div></div>
+                    <div class="detail-item"><div class="detail-label">Merchant</div><div class="detail-val">{{ case.transaction.merchant }}</div></div>
+                </div>
+            </div>
+
+            <!-- Graph Relationship Features -->
+            <div class="card">
+                <h3>🕸️ Entity Relationship Features</h3>
+                <div class="details-grid">
+                    <div class="detail-item"><div class="detail-label">Card Tx (1h)</div><div class="detail-val">{{ case.relationship_features.card_tx_1h | default(0) }}</div></div>
+                    <div class="detail-item"><div class="detail-label">Card Tx (24h)</div><div class="detail-val">{{ case.relationship_features.card_tx_24h | default(0) }}</div></div>
+                    <div class="detail-item"><div class="detail-label">Card Avg Spend (7d)</div><div class="detail-val">${{ "%.2f"|format(case.relationship_features.card_avg_spend_7d | default(0.0)) }}</div></div>
+                    <div class="detail-item"><div class="detail-label">Spend Ratio (7d)</div><div class="detail-val">{{ case.relationship_features.spend_ratio_7d | default(1.0) }}x</div></div>
+                    <div class="detail-item"><div class="detail-label">Merchant Pairs</div><div class="detail-val">{{ case.relationship_features.card_merchant_pairs | default(0) }}</div></div>
+                    <div class="detail-item"><div class="detail-label">Merchant Tx (24h)</div><div class="detail-val">{{ case.relationship_features.merchant_tx_24h | default(0) }}</div></div>
+                </div>
+            </div>
+
+            <!-- SHAP Drivers -->
+            <div class="card">
+                <h3>🔎 RiskGraph AI Assessment & SHAP Explanations</h3>
+                {% for exp in case.shap_explanations %}
+                <div class="shap-item">
+                    <span>{{ exp.feature }}</span>
+                    <span style="color: #ef4444; font-weight: bold;">+{{ "%.3f"|format(exp.contribution) }} risk contribution</span>
+                </div>
+                {% else %}
+                <div style="color: var(--text-muted); font-size: 14px;">No anomalous SHAP drivers identified.</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div>
+            <!-- Analyst Decision Panel -->
+            <div class="card">
+                <h3>Analyst Decision Panel</h3>
+                
+                {% if case.status == 'OPEN' %}
+                    <button class="btn btn-blue" onclick="updateAction({'status': 'UNDER REVIEW'})">START REVIEW</button>
+                    <button class="btn btn-purple" onclick="updateAction({'status': 'ESCALATED'})">ESCALATE CASE</button>
+                {% elif case.status == 'UNDER REVIEW' or case.status == 'ESCALATED' %}
+                    <button class="btn btn-red" onclick="updateAction({'decision': 'CONFIRMED_FRAUD'})">CONFIRM FRAUD</button>
+                    <button class="btn btn-green" onclick="updateAction({'decision': 'DISMISSED_LEGITIMATE'})">DISMISS AS LEGITIMATE</button>
+                {% else %}
+                    <div style="color: #34d399; font-weight: bold;">Case Resolved: {{ case.decision }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Investigation Notes -->
+            <div class="card">
+                <h3>Investigation Notes</h3>
+                <textarea id="noteInput" rows="3" placeholder="Enter investigation observation..."></textarea>
+                <button class="btn btn-blue" style="margin-bottom:0;" onclick="submitNote()">SAVE NOTE</button>
+
+                <div id="notesContainer" style="margin-top: 16px;">
+                    {% for n in case.notes %}
+                    <div style="background: #0f172a; padding: 8px; border-radius: 4px; margin-top: 8px; font-size: 13px;">
+                        <span style="color: var(--text-muted); font-size: 11px;">[{{ n.timestamp }}] {{ n.author }}:</span>
+                        <div>{{ n.text }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Case Timeline -->
+            <div class="card">
+                <h3>Case Timeline</h3>
+                <div id="timelineContainer">
+                    {% for item in case.timeline %}
+                    <div style="margin-bottom: 12px; font-size: 13px;">
+                        <span style="color: #38bdf8;">● {{ item.timestamp }}</span> - <strong>{{ item.event }}</strong>
+                        <div style="color: var(--text-muted); font-size: 12px; margin-left: 12px;">{{ item.details }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateAction(payload) {
+            fetch('/api/case/{{ case.id }}/action', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            });
+        }
+
+        function submitNote() {
+            const noteText = document.getElementById('noteInput').value;
+            if (!noteText.trim()) return;
+
+            fetch('/api/case/{{ case.id }}/note', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ note: noteText })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

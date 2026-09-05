@@ -1,0 +1,42 @@
+{
+    "validation": {
+        "precision": 0.5494296577946768,
+        "recall": 0.9233226837060703,
+        "f1": 0.6889153754469607,
+        "pr_auc": 0.9002277519222833,
+        "roc_auc": 0.9978107855750739,
+        "brier_score_raw": 0.008568217046558857,
+        "brier_score_calibrated": 0.0015643733786419034,
+        "false_positives": 948,
+        "false_negatives": 96,
+        "threshold_used": 0.1,
+        "financial_loss": 21000.0
+    },
+    "test": {
+        "precision": 0.5119105493437044,
+        "recall": 0.9293909973521624,
+        "f1": 0.6601880877742947,
+        "pr_auc": 0.8995556877874338,
+        "roc_auc": 0.9983050323867345,
+        "brier_score_raw": 0.008605385199189186,
+        "brier_score_calibrated": 0.0014791414141654968,
+        "false_positives": 1004,
+        "false_negatives": 80,
+        "threshold_used": 0.1,
+        "financial_loss": 19640.0
+    },
+    "features": [
+        "amt",
+        "distance_km",
+        "age",
+        "city_pop",
+        "trans_hour",
+        "trans_dayofweek",
+        "lat",
+        "long",
+        "merch_lat",
+        "merch_long",
+        "category_freq",
+        "gender_freq"
+    ]
+}

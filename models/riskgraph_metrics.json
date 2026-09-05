@@ -1,0 +1,48 @@
+{
+    "validation": {
+        "precision": 0.8231622746185853,
+        "recall": 0.9480830670926518,
+        "f1": 0.8812175204157386,
+        "pr_auc": 0.9690114230444156,
+        "roc_auc": 0.9993294667904906,
+        "brier_score_raw": 0.0036357322242110968,
+        "brier_score_calibrated": 0.000753905507735908,
+        "false_positives": 255,
+        "false_negatives": 65,
+        "threshold_used": 0.1,
+        "financial_loss": 10350.0
+    },
+    "test": {
+        "precision": 0.8092006033182504,
+        "recall": 0.9470432480141218,
+        "f1": 0.8727124847498984,
+        "pr_auc": 0.9644017907357962,
+        "roc_auc": 0.9992797475681324,
+        "brier_score_raw": 0.003622941905632615,
+        "brier_score_calibrated": 0.0007425561198033392,
+        "false_positives": 253,
+        "false_negatives": 60,
+        "threshold_used": 0.1,
+        "financial_loss": 9730.0
+    },
+    "features": [
+        "amt",
+        "distance_km",
+        "age",
+        "city_pop",
+        "trans_hour",
+        "trans_dayofweek",
+        "lat",
+        "long",
+        "merch_lat",
+        "merch_long",
+        "card_tx_count_1h",
+        "card_tx_count_24h",
+        "card_avg_amt_7d",
+        "card_amt_ratio_7d",
+        "card_merch_pair_cnt",
+        "merchant_tx_count_24h",
+        "category_freq",
+        "gender_freq"
+    ]
+}
